@@ -77,7 +77,6 @@ public class XMLHandler {
                     staff.appendChild(type);
 
 
-
                     // write the content into xml file
                     TransformerFactory transformerFactory = TransformerFactory.newInstance();
                     Transformer transformer = transformerFactory.newTransformer();
@@ -96,4 +95,5 @@ public class XMLHandler {
                 }
             }
         }
+    }
 }
