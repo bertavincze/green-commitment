@@ -3,9 +3,15 @@ package com.codecool.greencommitment.common;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+<<<<<<< HEAD
 import java.io.File;
 
+=======
+import java.io.*;
+>>>>>>> e167733b098690993b7e0cc462be831338c350a8
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -25,9 +31,14 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLHandler {
 
+    private Document doc;
+
+    public void handleXml() {
+        // TODO: Check if measurement id equals an already existing filename and call methods accordingly
+    }
+
     public void writeToXml(List<Measurement> measurements) {
         DocumentBuilder docBuilder = null;
-        Document doc = null;
         Element rootElement = null;
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -70,6 +81,20 @@ public class XMLHandler {
             } catch (TransformerException tfe) {
                 tfe.printStackTrace();
             }
+        }
+    }
+
+    public void loadXml(String filename) {
+        DocumentBuilder docBuilder = null;
+        Element rootElement = null;
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docBuilder = docFactory.newDocumentBuilder();
+            InputStream is = new FileInputStream(filename);
+            this.doc = docBuilder.parse(is);
+            this.doc.getDocumentElement().normalize();
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
         }
     }
 }
