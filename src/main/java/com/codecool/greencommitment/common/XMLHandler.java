@@ -2,7 +2,6 @@ package com.codecool.greencommitment.common;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,22 +28,31 @@ public class XMLHandler {
     private Document doc;
     private List<Measurement> measurements;
 
-    public void handleXml(Measurement measurement) {
-        // TODO: Check if measurement id equals an already existing filename and call methods accordingly
-        List<Measurement> measurements = new ArrayList<Measurement>();
-        if (getFiles(".").contains(String.valueOf(measurement.getId()))) {
-            loadXml(String.valueOf(measurement.getId() + ".xml"));
-        } else {
-            writeToXml(measurement);
+    public XMLHandler() {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = null;
+        try {
+            docBuilder = docFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
         }
-        Element rootNode = doc.getDocumentElement();
-        List<Element> measurementNodes = getElements(rootNode);
-
-        addMeasurement(measurementNodes);
+        this.doc = docBuilder.newDocument();
+        this.measurements = new ArrayList<>();
     }
 
-    private void writeRoot(Measurement measurement) {
-        DocumentBuilder docBuilder = null;
+    public void handleXml(Measurement measurement) {
+        if (getFiles(".").contains(String.valueOf(measurement.getId()))) {
+            loadXml(measurement.getId() + ".xml");
+        }
+        measurements.add(measurement);
+        Element rootNode = doc.getDocumentElement();
+        List<Element> measurementNodes = getElements(rootNode);
+        addMeasurement(measurementNodes);
+        writeXml(measurement);
+    }
+
+    private void writeXml(Measurement measurement) {
+        DocumentBuilder docBuilder;
         Element rootElement = null;
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -59,10 +67,14 @@ public class XMLHandler {
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         }
+        for (Measurement tempMeasurement : measurements) {
+            if (rootElement != null) {
+                writeNodes(tempMeasurement, rootElement);
+            }
+        }
     }
 
-
-    public void writeToXml(Measurement measurement) {
+    private void writeNodes(Measurement measurement, Element rootElement) {
         try {
             Element tempMeasurement = doc.createElement("measurement");
 
@@ -93,7 +105,7 @@ public class XMLHandler {
 
     }
 
-    public void loadXml(String filename) {
+    private void loadXml(String filename) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -105,8 +117,7 @@ public class XMLHandler {
         }
     }
 
-
-    public void addMeasurement(List<Element> measurementNodes) {
+    private void addMeasurement(List<Element> measurementNodes) {
         int id = Integer.valueOf(measurementNodes.get(0).getAttribute("id"));
         for (Element measurementNode : measurementNodes) {
             List<Element> fieldNodes = getElements(measurementNode);
@@ -129,18 +140,18 @@ public class XMLHandler {
     }
 
     private List<Element> getElements(Element parentNode) {
-        ArrayList<Element> elements = new ArrayList<Element>();
+        ArrayList<Element> elements = new ArrayList<>();
         for (int i = 0; i < parentNode.getChildNodes().getLength(); i++) {
-            Node childnode = parentNode.getChildNodes().item(i);
-            if (childnode instanceof Element) {
-                elements.add((Element) childnode);
+            Node childNode = parentNode.getChildNodes().item(i);
+            if (childNode instanceof Element) {
+                elements.add((Element) childNode);
             }
 
         }
         return elements;
     }
 
-    public List<String> getFiles(String filePath) {
+    private List<String> getFiles(String filePath) {
         List<String> fileNames = new ArrayList<>();
         File folder = new File(filePath);
         File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".xml"));
