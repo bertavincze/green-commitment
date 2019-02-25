@@ -13,7 +13,7 @@ public class Measurement {
         this.value = value;
         this.measurementType = measurementType;
     }
-    
+
     public int getId() {
         return id;
     }
