@@ -41,13 +41,18 @@ public class XMLHandler {
     }
 
     public void handleXml(Measurement measurement) {
-        if (getFiles(".").contains(String.valueOf(measurement.getId()))) {
-            loadXml(measurement.getId() + ".xml");
+        if (getFiles(".").contains(measurement.getId() + ".xml")) {
+            for (String fileName: getFiles(".")) {
+                if (fileName.equals(measurement.getId() + ".xml")) {
+                    loadXml(measurement.getId() + ".xml");
+                    Element rootNode = doc.getDocumentElement();
+                    List<Element> measurementNodes = getElements(rootNode);
+                    addMeasurement(measurementNodes, rootNode);
+                }
+            }
+
         }
         measurements.add(measurement);
-        Element rootNode = doc.getDocumentElement();
-        List<Element> measurementNodes = getElements(rootNode);
-        addMeasurement(measurementNodes);
         writeXml(measurement);
     }
 
@@ -117,13 +122,13 @@ public class XMLHandler {
         }
     }
 
-    private void addMeasurement(List<Element> measurementNodes) {
-        int id = Integer.valueOf(measurementNodes.get(0).getAttribute("id"));
+    private void addMeasurement(List<Element> measurementNodes, Element rootNode) {
+        int id = Integer.valueOf(rootNode.getAttribute("id"));
         for (Element measurementNode : measurementNodes) {
             List<Element> fieldNodes = getElements(measurementNode);
             long time = Long.valueOf(getString(fieldNodes, "time"));
             int value = Integer.valueOf(getString(fieldNodes, "value"));
-            MeasurementType measurementType = MeasurementType.valueOf((getString(fieldNodes, "type")));
+            MeasurementType measurementType = MeasurementType.valueOf((getString(fieldNodes, "type")).toUpperCase());
 
             Measurement measurement = new Measurement(id, time, value, measurementType);
             measurements.add(measurement);
