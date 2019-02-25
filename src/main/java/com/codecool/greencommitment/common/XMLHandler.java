@@ -43,7 +43,7 @@ public class XMLHandler {
                 doc.appendChild(rootElement);
 
                 Attr attr = doc.createAttribute("id");
-                attr.setValue(measurements.get(0).getId());
+                attr.setValue(String.valueOf(measurements.get(0).getId()));
                 rootElement.setAttributeNode(attr);
             } catch (ParserConfigurationException pce) {
                 pce.printStackTrace();
@@ -63,17 +63,17 @@ public class XMLHandler {
 
                     //Time elements
                     Element time = doc.createElement("time");
-                    time.appendChild(doc.createTextNode(measurements.get(i).getTime()));
+                    time.appendChild(doc.createTextNode(String.valueOf(measurements.get(i).getTime())));
                     staff.appendChild(time);
 
                     // Value elements
                     Element value = doc.createElement("value");
-                    value.appendChild(doc.createTextNode(measurements.get(i).getValue()));
+                    value.appendChild(doc.createTextNode(String.valueOf(measurements.get(i).getValue())));
                     staff.appendChild(value);
 
                     // Type elements
                     Element type = doc.createElement("type");
-                    type.appendChild(doc.createTextNode(String.valueOf(measurements.get(i).getType())));
+                    type.appendChild(doc.createTextNode(String.valueOf(measurements.get(i).getMeasurementType())));
                     staff.appendChild(type);
 
 
@@ -82,7 +82,7 @@ public class XMLHandler {
                     TransformerFactory transformerFactory = TransformerFactory.newInstance();
                     Transformer transformer = transformerFactory.newTransformer();
                     DOMSource source = new DOMSource(doc);
-                    StreamResult result = new StreamResult(new File(measurements.get(i).getId()));
+                    StreamResult result = new StreamResult(new File(String.valueOf(measurements.get(i).getId())));
 
 
                     // Output to console for testing
@@ -90,7 +90,7 @@ public class XMLHandler {
 
                     transformer.transform(source, result);
 
-                    System.out.println(measurements.get(i).getTime() + " " + measurements.get(i).getValue() + " " + measurements.get(i).getType()+ " was sucessfully saved to file!");
+                    //System.out.println(measurements.get(i).getTime() + " " + measurements.get(i).getValue() + " " + measurements.get(i).getType()+ " was sucessfully saved to file!");
                 } catch (TransformerException tfe) {
                     tfe.printStackTrace();
                 }
