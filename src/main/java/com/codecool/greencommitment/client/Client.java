@@ -26,8 +26,12 @@ public class Client {
         int portNumber = Integer.parseInt(args[2]);
         Socket clientSocket = new Socket(hostName, portNumber);
         Scanner reader = new Scanner(System.in);
+        System.out.print("Give measurement id: ");
+    
         int id = Integer.valueOf(reader.nextLine());
+        System.out.print("Give a number of celsius: ");
         int value = Integer.valueOf(reader.nextLine());
+        System.out.print("Type CELSIUS HERE!: ");
         MeasurementType measurementType = MeasurementType.valueOf(reader.nextLine());
         Measurement m = new Measurement(id, value, measurementType);
         System.out.println(m.getId());
