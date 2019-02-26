@@ -1,6 +1,7 @@
 package com.codecool.greencommitment.client;
 
 import com.codecool.greencommitment.common.Measurement;
+import com.codecool.greencommitment.common.MeasurementGenerator;
 import com.codecool.greencommitment.common.MeasurementType;
 
 import java.io.*;
@@ -15,9 +16,9 @@ import java.util.Scanner;
  */
 
 public class Client {
-
+    private MeasurementGenerator mg;
     public Client(String[] args) throws IOException, FileNotFoundException {
-
+        this.mg = new MeasurementGenerator();
         runClient(args);
     }
 
@@ -25,15 +26,7 @@ public class Client {
         String hostName = args[1];
         int portNumber = Integer.parseInt(args[2]);
         Socket clientSocket = new Socket(hostName, portNumber);
-        Scanner reader = new Scanner(System.in);
-        System.out.print("Give measurement id: ");
-    
-        int id = Integer.valueOf(reader.nextLine());
-        System.out.print("Give a number of celsius: ");
-        int value = Integer.valueOf(reader.nextLine());
-        System.out.print("Type CELSIUS HERE!: ");
-        MeasurementType measurementType = MeasurementType.valueOf(reader.nextLine());
-        Measurement m = new Measurement(id, value, measurementType);
+        Measurement m = mg.generator();
         System.out.println(m.getId());
         try {
             // Serialize today's date to a outputstream associated to the socket
