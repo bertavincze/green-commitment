@@ -1,12 +1,10 @@
-package com.codecool.greencommitment.client;
+package com.codecool.greencommitment.api.client;
 
-import com.codecool.greencommitment.common.Measurement;
-import com.codecool.greencommitment.common.MeasurementGenerator;
-import com.codecool.greencommitment.common.MeasurementType;
+import com.codecool.greencommitment.api.common.Measurement;
+import com.codecool.greencommitment.api.common.MeasurementGenerator;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * The client application is responsible for generating data that represents some kind of sensor measurement over time.

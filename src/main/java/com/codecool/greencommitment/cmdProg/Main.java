@@ -1,7 +1,7 @@
-package com.codecool.greencommitment.common;
+package com.codecool.greencommitment.cmdProg;
 
-import com.codecool.greencommitment.client.Client;
-import com.codecool.greencommitment.server.Server;
+import com.codecool.greencommitment.api.client.Client;
+import com.codecool.greencommitment.api.server.Server;
 import java.io.IOException;
 
 /**

@@ -37,7 +37,7 @@
                 <archive>
                     <manifest>
                         <addClasspath>true</addClasspath>
-                        <mainClass>com.codecool.greencommitment.common.Main</mainClass>
+                        <mainClass>com.codecool.greencommitment.cmdProg.Main</mainClass>
                     </manifest>
                 </archive>
             </configuration>

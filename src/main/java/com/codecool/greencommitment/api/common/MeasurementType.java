@@ -1,4 +1,4 @@
-package com.codecool.greencommitment.common;
+package com.codecool.greencommitment.api.common;
 
 public enum MeasurementType {
 

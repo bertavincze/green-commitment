@@ -1,7 +1,7 @@
-package com.codecool.greencommitment.server;
+package com.codecool.greencommitment.api.server;
 
-import com.codecool.greencommitment.common.Measurement;
-import com.codecool.greencommitment.common.XMLHandler;
+import com.codecool.greencommitment.api.common.Measurement;
+import com.codecool.greencommitment.api.common.XMLHandler;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

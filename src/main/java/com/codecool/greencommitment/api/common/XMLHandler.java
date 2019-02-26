@@ -1,4 +1,4 @@
-package com.codecool.greencommitment.common;
+package com.codecool.greencommitment.api.common;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
