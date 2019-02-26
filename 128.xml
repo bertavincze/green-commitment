@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<measurements id="128">
+    <measurement>
+        <time>1551112011324</time>
+        <value>23</value>
+        <type>celsius</type>
+    </measurement>
+    <measurement>
+        <time>1551112119696</time>
+        <value>23</value>
+        <type>celsius</type>
+    </measurement>
+    <measurement>
+        <time>1551112487638</time>
+        <value>23</value>
+        <type>celsius</type>
+    </measurement>
+    <measurement>
+        <time>1551121359551</time>
+        <value>50</value>
+        <type>celsius</type>
+    </measurement>
+</measurements>

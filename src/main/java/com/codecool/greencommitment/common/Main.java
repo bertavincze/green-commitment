@@ -14,6 +14,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+
+
         try {
             if (args[0].equalsIgnoreCase("server")) {
                 new Server(args);
@@ -24,6 +26,9 @@ public class Main {
             }
         } catch (IOException e) {
             // TODO: Handle Exception
+        } finally {
+            //XMLHandler xml = new XMLHandler();
+            //xml.handleXml(new Measurement(128, 23, MeasurementType.CELSIUS));
         }
     }
 }

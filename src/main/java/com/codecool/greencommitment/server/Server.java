@@ -1,6 +1,11 @@
 package com.codecool.greencommitment.server;
 
+import com.codecool.greencommitment.common.Measurement;
+import com.codecool.greencommitment.common.XMLHandler;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -20,9 +25,26 @@ import java.net.Socket;
 public class Server {
 
     public Server(String[] args) throws IOException {
-        int portNumber = Integer.parseInt(args[1]);
-        ServerSocket serverSocket = new ServerSocket(portNumber);
-        Socket clientSocket = serverSocket.accept();
-        System.out.println("Hello");
+        runServer(args[1]);
     }
+
+    private void runServer(String arg) throws IOException {
+        int portNumber = Integer.parseInt(arg);
+        ServerSocket ss = new ServerSocket(portNumber);
+        System.out.println("The server is ready for the measurements: ");
+        Socket socket = ss.accept();
+        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        XMLHandler xml = new XMLHandler();
+        try {
+            Measurement m = (Measurement) is.readObject();
+            System.out.println(m.getId());
+            xml.handleXml(m);
+            os.writeObject(m);
+            socket.close();
+        } catch (IOException | ClassNotFoundException e ) {
+            e.printStackTrace();
+        }
+    }
+
 }

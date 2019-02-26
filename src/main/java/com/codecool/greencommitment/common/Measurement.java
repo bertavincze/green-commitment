@@ -1,7 +1,9 @@
 package com.codecool.greencommitment.common;
 
-public class Measurement {
+import java.io.Serializable;
 
+public class Measurement implements Serializable {
+    private static final long serialVersionUID = 158441623L;
     private int id;
     private long time;
     private int value;

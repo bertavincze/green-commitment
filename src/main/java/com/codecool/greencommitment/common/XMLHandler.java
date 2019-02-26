@@ -163,7 +163,6 @@ public class XMLHandler {
 
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                System.out.println(file.getName());
                 fileNames.add(file.getName());
             }
         }
