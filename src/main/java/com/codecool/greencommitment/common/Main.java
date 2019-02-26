@@ -26,6 +26,7 @@ public class Main {
             }
         } catch (IOException e) {
             // TODO: Handle Exception
+            e.printStackTrace();
         } finally {
             //XMLHandler xml = new XMLHandler();
             //xml.handleXml(new Measurement(128, 23, MeasurementType.CELSIUS));

@@ -32,42 +32,24 @@ public class Server {
         int portNumber = Integer.parseInt(arg);
         ServerSocket ss = new ServerSocket(portNumber);
         System.out.println("The server is ready for the measurements: ");
-        int i = 0;
-        while (i < 2) {
-            i++;
-            Thread thread = new Thread(){
+        while (true) {
+            final Socket socket = ss.accept();
+            new Thread(() -> {
+                try {
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    XMLHandler xml = new XMLHandler();
+                    Measurement m = (Measurement) is.readObject();
+                    xml.handleXml(m);
+                    os.writeObject(m);
+                    socket.close();
 
-                public void run(){
-                    try {
-                        Socket socket = ss.accept();
-                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                        XMLHandler xml = new XMLHandler();
-                        Measurement m = (Measurement) is.readObject();
-                        xml.handleXml(m);
-                        os.writeObject(m);
-                        socket.close();
-
-                    } catch (IOException | ClassNotFoundException e ) {
-                        e.printStackTrace();
-                    }
+                } catch (IOException | ClassNotFoundException e ) {
+                    e.printStackTrace();
                 }
-            };
+            }).start();
 
-            thread.start();
-        } /*
-        Socket socket = ss.accept();
-        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-        XMLHandler xml = new XMLHandler();
-        try {
-            Measurement m = (Measurement) is.readObject();
-            xml.handleXml(m);
-            os.writeObject(m);
-            socket.close();
-        } catch (IOException | ClassNotFoundException e ) {
-            e.printStackTrace();
-        } */
+        }
     }
 
 }
