@@ -1,6 +1,9 @@
 package com.codecool.greencommitment.cmdProg;
 
+import java.awt.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.codecool.greencommitment.api.common.Measurement;
 import com.codecool.greencommitment.api.common.MeasurementType;
@@ -8,7 +11,9 @@ import com.codecool.greencommitment.api.common.XMLHandler;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class LineChart {
@@ -17,19 +22,26 @@ public class LineChart {
         LineChart lc = new LineChart();
         lc.showLineChart("joli","buli");
     }
-    public void showLineChart(String id, String type) throws InterruptedException, IOException {
+
+    private String convertMillisIntoDate(long data){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date result = new Date(data);
+        return sdf.format(result);
+    }
+    private void showLineChart(String id, String type) throws InterruptedException, IOException {
         DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
         Measurement m = new Measurement(12,12, MeasurementType.CELSIUS);
         Thread.sleep(1000);
         Measurement m1 = new Measurement(66,93, MeasurementType.CELSIUS);
-        Thread.sleep(1000);
+        Thread.sleep(4000);
         Measurement m2 = new Measurement(45,34, MeasurementType.CELSIUS);
-        Thread.sleep(1000);
+        Thread.sleep(2500);
         Measurement m3 = new Measurement(18,45, MeasurementType.CELSIUS);
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         Measurement m4 = new Measurement(99,66, MeasurementType.CELSIUS);
+
     
-        line_chart_dataset.addValue(m.getValue(),"temp", String.valueOf(m.getTime()));
+        line_chart_dataset.addValue(m.getValue(),"temp", convertMillisIntoDate(m.getTime()));
         line_chart_dataset.addValue(m1.getValue(),"temp", String.valueOf(m1.getTime()));
         line_chart_dataset.addValue(m2.getValue(),"temp", String.valueOf(m2.getTime()));
         line_chart_dataset.addValue(m3.getValue(),"temp", String.valueOf(m3.getTime()));
@@ -48,6 +60,10 @@ public class LineChart {
                 "Temperature",
                 line_chart_dataset,PlotOrientation.VERTICAL,
                 true,true,false);
+            CategoryPlot plot = chart.getCategoryPlot();
+            BarRenderer renderer = (BarRenderer) plot.getRenderer();
+            Color color = new Color(79, 129, 189);
+            renderer.setSeriesPaint(0, color);
         }
         
         
