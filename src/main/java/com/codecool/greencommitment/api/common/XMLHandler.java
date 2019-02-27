@@ -26,7 +26,7 @@ import javax.xml.transform.stream.StreamResult;
 public class XMLHandler {
 
     private Document doc;
-    private List<Measurement> measurements;
+    private List<Document> measurements;
 
     public XMLHandler() {
         DocumentBuilder docBuilder = createDocumentBuilder();
@@ -34,11 +34,13 @@ public class XMLHandler {
         this.measurements = new ArrayList<>();
     }
 
-    public void handleXml(Measurement measurement) {
-        if (getFiles(".").contains(measurement.getId() + ".xml")) {
-            for (String fileName: getFiles(".")) {
-                if (fileName.equals(measurement.getId() + ".xml")) {
-                    loadXml(measurement.getId() + ".xml");
+    public void handleXml(Document document) {
+        List<String> fileNames = getFiles(".");
+        String id = document.getDocumentElement().getAttribute("id") + ".xml";
+        if (fileNames.contains(id)) {
+            for (String fileName: fileNames) {
+                if (fileName.equals(id)) {
+                    loadXml(id);
                     Element rootNode = doc.getDocumentElement();
                     List<Element> measurementNodes = getElements(rootNode);
                     addMeasurement(measurementNodes, rootNode);
@@ -46,45 +48,32 @@ public class XMLHandler {
             }
 
         }
-        measurements.add(measurement);
-        writeXml(measurement);
+        measurements.add(document);
+        writeXml(document);
     }
 
-    private void writeXml(Measurement measurement) {
+    private void writeXml(Document document) {
         DocumentBuilder docBuilder = createDocumentBuilder();
         doc = docBuilder.newDocument();
         Element rootElement = doc.createElement("measurements");
         doc.appendChild(rootElement);
-        doc.createAttribute("id");
-        rootElement.setAttribute("id", String.valueOf(measurement.getId()));
-        for (Measurement tempMeasurement : measurements) {
-            writeNodes(tempMeasurement, rootElement);
+        rootElement.setAttribute("id", document.getDocumentElement().getAttribute("id"));
+        for (Document doc : measurements) {
+            writeNodes(doc, rootElement);
         }
     }
 
-    private void writeNodes(Measurement measurement, Element rootElement) {
+    private void writeNodes(Document document, Element rootElement) {
         try {
             Element tempMeasurement = doc.createElement("measurement");
-
             rootElement.appendChild(tempMeasurement);
-
-            Element time = doc.createElement("time");
-            time.appendChild(doc.createTextNode(String.valueOf(measurement.getTime())));
-            tempMeasurement.appendChild(time);
-
-            Element value = doc.createElement("value");
-            value.appendChild(doc.createTextNode(String.valueOf(measurement.getValue())));
-            tempMeasurement.appendChild(value);
-
-            Element type = doc.createElement("type");
-            type.appendChild(doc.createTextNode(measurement.getMeasurementType().getValue()));
-            tempMeasurement.appendChild(type);
-
+            createElement(doc, "time", document.getElementsByTagName("time").item(0).getTextContent(), tempMeasurement);
+            createElement(doc, "value", document.getElementsByTagName("value").item(0).getTextContent(), tempMeasurement);
+            createElement(doc, "type", document.getElementsByTagName("type").item(0).getTextContent(), tempMeasurement);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(measurement.getId() + ".xml"));
-
+            StreamResult result = new StreamResult(new File(document.getDocumentElement().getAttribute("id") + ".xml"));
             transformer.transform(source, result);
 
         } catch (TransformerException tfe) {
@@ -113,7 +102,7 @@ public class XMLHandler {
             MeasurementType measurementType = MeasurementType.valueOf((getString(fieldNodes, "type")).toUpperCase());
 
             Measurement measurement = new Measurement(id, time, value, measurementType);
-            measurements.add(measurement);
+            measurements.add(measurement.convertToDocument());
         }
     }
 

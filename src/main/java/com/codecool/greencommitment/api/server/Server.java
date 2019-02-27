@@ -1,11 +1,9 @@
 package com.codecool.greencommitment.api.server;
 
-import com.codecool.greencommitment.api.common.Measurement;
 import com.codecool.greencommitment.api.common.XMLHandler;
-
+import org.w3c.dom.Document;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -37,11 +35,9 @@ public class Server {
             new Thread(() -> {
                 try {
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     XMLHandler xml = new XMLHandler();
-                    Measurement m = (Measurement) is.readObject();
-                    xml.handleXml(m);
-                    os.writeObject(m);
+                    Document measurementDoc = (Document)is.readObject();
+                    xml.handleXml(measurementDoc);
                     socket.close();
 
                 } catch (IOException | ClassNotFoundException e ) {

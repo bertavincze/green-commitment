@@ -2,7 +2,6 @@ package com.codecool.greencommitment.api.client;
 
 import com.codecool.greencommitment.api.common.Measurement;
 import com.codecool.greencommitment.api.common.MeasurementGenerator;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -15,7 +14,7 @@ import java.net.Socket;
 
 public class Client {
     private MeasurementGenerator mg;
-    public Client(String[] args) throws IOException, FileNotFoundException {
+    public Client(String[] args) throws IOException {
         this.mg = new MeasurementGenerator();
         runClient(args);
     }
@@ -27,14 +26,11 @@ public class Client {
         Measurement m = mg.generator();
         System.out.println(m.getId());
         try {
-            // Serialize today's date to a outputstream associated to the socket
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
             System.out.println(m.getId());
-            os.writeObject(m);
-            Measurement rm = (Measurement) is.readObject();
+            os.writeObject(m.convertToDocument());
             clientSocket.close();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
