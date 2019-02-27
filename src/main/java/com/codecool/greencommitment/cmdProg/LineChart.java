@@ -17,7 +17,7 @@ public class LineChart {
     
     public static void main( String[ ] args ) throws Exception {
         LineChart lc = new LineChart();
-        lc.showLineChart("joli","line");
+        lc.showLineChart("joli","bar");
     }
     public void showLineChart(String id, String type) throws InterruptedException, IOException, IllegalArgumentException {
         DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
@@ -53,7 +53,7 @@ public class LineChart {
                 line_chart_dataset,PlotOrientation.VERTICAL,
                 true,true,false);
         } else {
-            throw new IllegalArgumentException("Not existing type of char!");
+            throw new IllegalArgumentException("This chart type is not implemented!");
         }
         
         int width = 640;    /* Width of the image */
