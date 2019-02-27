@@ -1,9 +1,11 @@
 package com.codecool.greencommitment.api.common;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilder;
 import java.io.Serializable;
 
 public class Measurement implements Serializable {
-    private static final long serialVersionUID = 158441623L;
     private int id;
     private long time;
     private int value;
@@ -21,6 +23,19 @@ public class Measurement implements Serializable {
         this.time = time;
         this.value = value;
         this.measurementType = measurementType;
+    }
+
+    public Document convertToDocument() {
+        XMLHandler xmlHandler = new XMLHandler();
+        DocumentBuilder db = xmlHandler.createDocumentBuilder();
+        Document doc = db.newDocument();
+        Element root = doc.createElement("measurement");
+        doc.appendChild(root);
+        root.setAttribute("id", String.valueOf(id));
+        xmlHandler.createElement(doc, "time", String.valueOf(time), root);
+        xmlHandler.createElement(doc, "value", String.valueOf(value), root);
+        xmlHandler.createElement(doc, "type", String.valueOf(measurementType).toLowerCase(), root);
+        return doc;
     }
 
     public int getId() {

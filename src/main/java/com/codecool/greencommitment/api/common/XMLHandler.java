@@ -29,13 +29,7 @@ public class XMLHandler {
     private List<Measurement> measurements;
 
     public XMLHandler() {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = null;
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
+        DocumentBuilder docBuilder = createDocumentBuilder();
         this.doc = docBuilder.newDocument();
         this.measurements = new ArrayList<>();
     }
@@ -57,25 +51,14 @@ public class XMLHandler {
     }
 
     private void writeXml(Measurement measurement) {
-        DocumentBuilder docBuilder;
-        Element rootElement = null;
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.newDocument();
-            rootElement = doc.createElement("measurements");
-            doc.appendChild(rootElement);
-
-            doc.createAttribute("id");
-            rootElement.setAttribute("id", String.valueOf(measurement.getId()));
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        }
+        DocumentBuilder docBuilder = createDocumentBuilder();
+        doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement("measurements");
+        doc.appendChild(rootElement);
+        doc.createAttribute("id");
+        rootElement.setAttribute("id", String.valueOf(measurement.getId()));
         for (Measurement tempMeasurement : measurements) {
-            if (rootElement != null) {
-                writeNodes(tempMeasurement, rootElement);
-            }
+            writeNodes(tempMeasurement, rootElement);
         }
     }
 
@@ -112,12 +95,11 @@ public class XMLHandler {
 
     private void loadXml(String filename) {
         try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            DocumentBuilder docBuilder = createDocumentBuilder();
             InputStream is = new FileInputStream(filename);
             this.doc = docBuilder.parse(is);
             this.doc.getDocumentElement().normalize();
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
     }
@@ -167,5 +149,22 @@ public class XMLHandler {
             }
         }
         return fileNames;
+    }
+
+    public DocumentBuilder createDocumentBuilder() {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = null;
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        return db;
+    }
+
+    public void createElement(Document doc, String tagName, String textContent, Element root) {
+        Element element = doc.createElement(tagName);
+        element.setTextContent(textContent);
+        root.appendChild(element);
     }
 }
