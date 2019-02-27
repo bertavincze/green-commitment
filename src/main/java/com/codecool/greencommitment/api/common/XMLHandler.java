@@ -82,7 +82,7 @@ public class XMLHandler {
 
     }
 
-    private void loadXml(String filename) {
+    void loadXml(String filename) {
         try {
             DocumentBuilder docBuilder = createDocumentBuilder();
             InputStream is = new FileInputStream(filename);
@@ -106,7 +106,7 @@ public class XMLHandler {
         }
     }
 
-    private String getString(List<Element> elements, String name) {
+    String getString(List<Element> elements, String name) {
         for (Element element : elements) {
             if (element.getTagName().equals(name)) {
                 return element.getTextContent();
@@ -115,7 +115,7 @@ public class XMLHandler {
         throw new IllegalStateException();
     }
 
-    private List<Element> getElements(Element parentNode) {
+    List<Element> getElements(Element parentNode) {
         ArrayList<Element> elements = new ArrayList<>();
         for (int i = 0; i < parentNode.getChildNodes().getLength(); i++) {
             Node childNode = parentNode.getChildNodes().item(i);
@@ -155,5 +155,13 @@ public class XMLHandler {
         Element element = doc.createElement(tagName);
         element.setTextContent(textContent);
         root.appendChild(element);
+    }
+
+    public Document getDoc() {
+        return doc;
+    }
+
+    public List<Document> getMeasurements() {
+        return measurements;
     }
 }
