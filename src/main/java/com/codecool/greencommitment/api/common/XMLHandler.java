@@ -127,13 +127,13 @@ public class XMLHandler {
         return elements;
     }
 
-    private List<String> getFiles(String filePath) {
+    public List<String> getFiles(String filePath) {
         List<String> fileNames = new ArrayList<>();
         File folder = new File(filePath);
         File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".xml"));
 
         for (File file : listOfFiles) {
-            if (file.isFile()) {
+            if (file.isFile() && !file.getName().equals("pom.xml")) {
                 fileNames.add(file.getName());
             }
         }
