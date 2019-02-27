@@ -28,6 +28,22 @@ class Input {
     }
 
     boolean isChartRequest() {
-        return input.matches("(^chart\\s\\d{1,3})");
+        return input.equalsIgnoreCase("chart");
+    }
+
+    boolean isValidDelay() {
+        return 999 < Integer.parseInt(input) && Integer.parseInt(input) <= 10000;
+    }
+
+    boolean isValidMax() {
+        return 0 < Integer.parseInt(input) && Integer.parseInt(input) <= 10;
+    }
+
+    boolean isGenerationRequest() {
+        return input.equalsIgnoreCase("send");
+    }
+
+    String getInputString() {
+        return input;
     }
 }
