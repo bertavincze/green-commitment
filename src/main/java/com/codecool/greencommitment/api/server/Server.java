@@ -38,7 +38,6 @@ public class Server {
                     XMLHandler xml = new XMLHandler();
                     Document measurementDoc = (Document)is.readObject();
                     xml.handleXml(measurementDoc);
-                    socket.close();
 
                 } catch (IOException | ClassNotFoundException e ) {
                     e.printStackTrace();
