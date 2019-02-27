@@ -1,19 +1,49 @@
 package com.codecool.greencommitment.cmdProg;
 
-public class Menu {
+import java.util.Scanner;
+
+class Menu {
     
     private String title;
     private String[] options;
+    private final Scanner sc = new Scanner(System.in);
     
-    public Menu(String title, String[] options) {
+    Menu(String title, String[] options) {
         this.title = title;
         this.options = options;
     }
     
-    public void displayMenu() {
+    private void displayMenu() {
         System.out.println(title + "\n");
-        for (int i = 0; i < options.length; i++) {
-            System.out.println(i + 1 + ")" + " " + options[i]);
+        for (String option:options) {
+            System.out.print(option + ", ");
         }
+    }
+
+    private Input getInput() {
+        return new Input(sc.nextLine());
+    }
+
+    void handleMenu() {
+        displayMenu();
+        Input input = getInput();
+        if (input.isExitRequest()) {
+            System.exit(0);
+        } else if (input.isConnectionRequest()) {
+            handleConnectionRequest();
+        } else if (input.isId()) {
+            handleGeneration();
+        } else if (input.isChartRequest()) {
+            handleChartRequest();
+        }
+    }
+
+    private void handleChartRequest() {
+    }
+
+    private void handleConnectionRequest() {
+    }
+
+    private void handleGeneration() {
     }
 }
