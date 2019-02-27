@@ -24,13 +24,13 @@ public class ChartGenerator {
         this.dcd = new DefaultCategoryDataset();
         this.xmlHandler = new XMLHandler();
     }
-    
+
     private String convertMillisIntoDate(long data) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         return sdf.format(new Date(data));
     }
 
-    private void generateChart(String id, ChartType chartType) throws IOException {
+    public void generateChart(String id, ChartType chartType) throws IOException {
         JFreeChart chart;
         addDataToChart(id);
         if (chartType == ChartType.BAR) {
