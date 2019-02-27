@@ -1,6 +1,5 @@
 package com.codecool.greencommitment.cmdProg;
 
-import com.codecool.greencommitment.api.client.Client;
 import com.codecool.greencommitment.api.server.Server;
 import java.io.IOException;
 
@@ -18,9 +17,8 @@ public class Main {
             if (args[0].equalsIgnoreCase("server")) {
                 new Server(args);
             } else if (args[0].equalsIgnoreCase("client")) {
-                new Client(args);
-                new Menu("Client Menu", new String[]{"Connect", "Generate measurement",
-                    "Generate chart", "Exit"}).handleMenu();
+                new ClientMenu("available commands: ", new String[]{"connect", "send",
+                    "chart", "exit"}).handleMenu();
             } else {
                 System.exit(-1);
             }
