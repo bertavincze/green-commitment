@@ -2,6 +2,7 @@ package com.codecool.greencommitment.api.client;
 
 import com.codecool.greencommitment.api.common.Measurement;
 import com.codecool.greencommitment.api.common.MeasurementGenerator;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -13,26 +14,33 @@ import java.net.Socket;
  */
 
 public class Client {
-    // NEEDS BIG REFACTOR DUE TO MENU
+
+    private String hostName;
+    private int portNumber;
+    private Socket clientSocket;
     private MeasurementGenerator mg;
-    public Client(String[] args) throws IOException{
+
+    public Client(String[] args) {
         this.mg = new MeasurementGenerator();
-        runClient(args);
+        this.hostName = args[0];
+        this.portNumber = Integer.parseInt(args[1]);
     }
 
-    private void runClient(String[] args) throws IOException {
-        String hostName = args[1];
-        int portNumber = Integer.parseInt(args[2]);
-        Socket clientSocket = new Socket(hostName, portNumber);
-        Measurement m = mg.generator(10);
-        System.out.println(m.getId());
-        try {
-            ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-            System.out.println(m.getId());
-            os.writeObject(m.convertToDocument());
-            clientSocket.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    public void connect() throws IOException {
+        clientSocket = new Socket(hostName, portNumber);
+    }
+
+    public void disconnect() throws IOException {
+        clientSocket.close();
+    }
+
+    public void runClientGeneration(int id, int delay, int max) throws IOException, InterruptedException {
+        ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+        for (int i = 0; i < max; i++) {
+            Measurement measurement = mg.generator(id);
+            os.writeObject(measurement.convertToDocument());
+            Thread.sleep(delay);
         }
+        disconnect();
     }
 }
