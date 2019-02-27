@@ -19,6 +19,8 @@ public class Main {
                 new Server(args);
             } else if (args[0].equalsIgnoreCase("client")) {
                 new Client(args);
+                new Menu("Client Menu", new String[]{"Connect", "Generate measurement",
+                    "Generate chart", "Exit"}).handleMenu();
             } else {
                 System.exit(-1);
             }
