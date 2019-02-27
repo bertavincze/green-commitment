@@ -13,8 +13,9 @@ import java.net.Socket;
  */
 
 public class Client {
+    // NEEDS BIG REFACTOR DUE TO MENU
     private MeasurementGenerator mg;
-    public Client(String[] args) throws IOException {
+    public Client(String[] args) throws IOException{
         this.mg = new MeasurementGenerator();
         runClient(args);
     }
@@ -23,7 +24,7 @@ public class Client {
         String hostName = args[1];
         int portNumber = Integer.parseInt(args[2]);
         Socket clientSocket = new Socket(hostName, portNumber);
-        Measurement m = mg.generator();
+        Measurement m = mg.generator(10);
         System.out.println(m.getId());
         try {
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
