@@ -1,6 +1,5 @@
 package com.codecool.greencommitment.cmdProg;
 
-import com.codecool.greencommitment.api.server.Server;
 import java.io.IOException;
 
 /**
@@ -12,10 +11,9 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-
         try {
             if (args[0].equalsIgnoreCase("server")) {
-                new Server(args);
+                new ServerMenu("available commands: ", new String[]{"chart", "exit"}, args).handleMenu();
             } else if (args[0].equalsIgnoreCase("client")) {
                 new ClientMenu("available commands: ", new String[]{"connect", "send",
                     "chart", "exit"}).handleMenu();
