@@ -34,12 +34,19 @@ public class Client {
         clientSocket.close();
     }
 
-    public void runClientGeneration(int id, int delay, int max) throws IOException, InterruptedException {
-        ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-        for (int i = 0; i < max; i++) {
-            Measurement measurement = mg.generator(id);
-            os.writeObject(measurement.convertToDocument());
-            Thread.sleep(delay);
-        }
+    public void runClientGeneration(int id, int delay, int max) {
+        new Thread(() -> {
+            try {
+                ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+                for (int i = 0; i < max; i++) {
+                    Measurement measurement = mg.generator(id);
+                    os.writeObject(measurement.convertToDocument());
+                    Thread.sleep(delay);
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+    
+        }).start();
     }
 }
