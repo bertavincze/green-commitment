@@ -160,6 +160,11 @@ class ClientMenu {
     }
 
     private void handleExitRequest() {
-        System.exit(0);
+        try {
+            client.disconnect();
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

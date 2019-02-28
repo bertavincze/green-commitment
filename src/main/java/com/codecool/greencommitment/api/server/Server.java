@@ -2,6 +2,8 @@ package com.codecool.greencommitment.api.server;
 
 import com.codecool.greencommitment.api.common.XMLHandler;
 import org.w3c.dom.Document;
+
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -35,10 +37,17 @@ public class Server {
             new Thread(() -> {
                 try {
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                    XMLHandler xml = new XMLHandler();
-                    Document measurementDoc = (Document)is.readObject();
-                    xml.handleXml(measurementDoc);
 
+                    Document measurementDoc = null;
+                    while (true) {
+                        try {
+                            XMLHandler xml = new XMLHandler();
+                            measurementDoc = (Document)is.readObject();
+                            xml.handleXml(measurementDoc);
+                        } catch (EOFException e) {
+                            break;
+                        }
+                    }
                 } catch (IOException | ClassNotFoundException e ) {
                     e.printStackTrace();
                 }

@@ -41,6 +41,5 @@ public class Client {
             os.writeObject(measurement.convertToDocument());
             Thread.sleep(delay);
         }
-        disconnect();
     }
 }
