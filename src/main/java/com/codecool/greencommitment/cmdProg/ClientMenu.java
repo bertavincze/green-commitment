@@ -8,38 +8,18 @@ import com.codecool.greencommitment.api.common.XMLHandler;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
-class ClientMenu {
+class ClientMenu extends AbstractMenu {
 
-    private String title;
-    private String[] options;
-    private final Scanner sc;
     private XMLHandler xmlHandler;
     private Client client;
     
     ClientMenu(String title, String[] options) {
-        this.title = title;
-        this.options = options;
-        this.sc = new Scanner(System.in);
+        super(title, options);
         this.xmlHandler = new XMLHandler();
     }
-    
-    private void displayMenu() {
-        System.out.print(title);
-        for (String option:options) {
-            if (option.equals(options[options.length-1])) {
-                System.out.println(option);
-            } else {
-                System.out.print(option + ", ");
-            }
-        }
-    }
 
-    private Input getInput() {
-        return new Input(sc.nextLine());
-    }
-
+    @Override
     void handleMenu() {
         while (true) {
             displayMenu();
@@ -105,7 +85,7 @@ class ClientMenu {
         try {
             client.connect();
         } catch (IOException e) {
-            System.out.println("IO Exception occurred!");
+            System.out.println("IO Exception occurred: " + e.getMessage());
         }
     }
 
@@ -114,10 +94,6 @@ class ClientMenu {
             client.runClientGeneration(getSensorId(), getDelay(), getMaxGenerations());
         } catch (CustomException e) {
             System.out.println("Cannot start generation with given data!");
-        } catch (InterruptedException e) {
-            System.out.println("Thread was interrupted during generation.");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -164,7 +140,7 @@ class ClientMenu {
             client.disconnect();
             System.exit(0);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client socket closed.");
         }
     }
 }
