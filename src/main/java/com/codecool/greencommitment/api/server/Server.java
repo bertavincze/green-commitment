@@ -24,16 +24,18 @@ import java.net.Socket;
 
 public class Server {
 
+    private int portNumber;
+    private ServerSocket serverSocket;
+
     public Server(String[] args) throws IOException {
-        runServer(args[1]);
+        this.portNumber = Integer.parseInt(args[1]);
+        this.serverSocket = new ServerSocket(portNumber);
     }
 
-    private void runServer(String arg) throws IOException {
-        int portNumber = Integer.parseInt(arg);
-        ServerSocket ss = new ServerSocket(portNumber);
+    public void runServer() throws IOException {
         System.out.println("The server is ready for the measurements: ");
         while (true) {
-            final Socket socket = ss.accept();
+            final Socket socket = serverSocket.accept();
             new Thread(() -> {
                 try {
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
@@ -56,4 +58,11 @@ public class Server {
         }
     }
 
+    public void disconnect() throws IOException {
+        this.serverSocket.close();
+    }
+
+    public int getPortNumber() {
+        return portNumber;
+    }
 }
