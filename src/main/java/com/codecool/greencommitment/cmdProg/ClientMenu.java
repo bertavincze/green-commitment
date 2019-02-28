@@ -11,12 +11,10 @@ import java.util.List;
 
 class ClientMenu extends AbstractMenu {
 
-    private XMLHandler xmlHandler;
     private Client client;
     
     ClientMenu(String title, String[] options) {
         super(title, options);
-        this.xmlHandler = new XMLHandler();
     }
 
     @Override
@@ -30,56 +28,10 @@ class ClientMenu extends AbstractMenu {
                 handleConnectionRequest();
             } else if (input.isGenerationRequest()) {
                 handleGeneration();
-            } else if (input.isChartRequest()) {
-                handleChartRequest();
             }
         }
     }
-
-    private void handleChartRequest() {
-        printFileNames();
-        System.out.println("\nEnter the id of the sensor: ");
-        Input input = getInput();
-        if (xmlHandler.getFiles(".").contains(input.getInputString() + ".xml")) {
-            try {
-                ChartType chartType = getChartType();
-                new ChartGenerator().generateChart(input.getInputString(), chartType);
-                System.out.println("Chart image generated to root folder as: " + input.getInputString() + ".jpeg");
-            } catch (CustomException e) {
-                System.out.println("Chart type not recognized!");
-            } catch (IOException e) {
-                System.out.println("IO Exception occurred while creating chart!");
-            }
-        } else {
-            System.out.println("Sensor id not found!");
-        }
-    }
-
-    private ChartType getChartType() throws CustomException {
-        System.out.println("choose from available chart types: bar, line");
-        Input chartType = getInput();
-        if (chartType.getInputString().equalsIgnoreCase("bar")) {
-            return ChartType.BAR;
-        } else if (chartType.getInputString().equalsIgnoreCase("line")) {
-            return ChartType.LINE;
-        } else {
-            throw new CustomException("Invalid chart type!");
-        }
-    }
-
-    private void printFileNames() {
-        List<String> fileNames = xmlHandler.getFiles(".");
-        System.out.println("list of sensor ids currently stored: ");
-        for (String fileName: fileNames) {
-            if (fileName.equals(fileNames.get(fileNames.size()-1))) {
-                System.out.print(fileName.replaceFirst(".xml", ""));
-            } else {
-                System.out.print(fileName.replaceFirst(".xml", "") + ", ");
-            }
-        }
-        System.out.println();
-    }
-
+    
     private void handleConnectionRequest() {
         client = new Client(getConnectionDetails());
         try {

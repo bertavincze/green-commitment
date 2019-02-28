@@ -15,8 +15,7 @@ public class Main {
             if (args[0].equalsIgnoreCase("server")) {
                 new ServerMenu("available commands: ", new String[]{"chart", "exit"}, args).handleMenu();
             } else if (args[0].equalsIgnoreCase("client")) {
-                new ClientMenu("available commands: ", new String[]{"connect", "send",
-                    "chart", "exit"}).handleMenu();
+                new ClientMenu("available commands: ", new String[]{"connect", "send", "exit"}).handleMenu();
             } else {
                 System.exit(-1);
             }

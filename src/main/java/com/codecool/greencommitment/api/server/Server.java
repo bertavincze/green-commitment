@@ -33,7 +33,6 @@ public class Server {
     }
 
     public void runServer() throws IOException {
-        System.out.println("The server is ready for the measurements: ");
         while (true) {
             final Socket socket = serverSocket.accept();
             new Thread(() -> {
