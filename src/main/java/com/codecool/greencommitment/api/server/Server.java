@@ -39,11 +39,10 @@ public class Server {
                 try {
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
 
-                    Document measurementDoc = null;
                     while (true) {
                         try {
                             XMLHandler xml = new XMLHandler();
-                            measurementDoc = (Document)is.readObject();
+                            Document measurementDoc = (Document)is.readObject();
                             xml.handleXml(measurementDoc);
                         } catch (EOFException e) {
                             break;
