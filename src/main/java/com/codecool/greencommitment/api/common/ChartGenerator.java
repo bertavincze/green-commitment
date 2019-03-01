@@ -56,8 +56,8 @@ public class ChartGenerator {
     }
 
     private void saveToFile(String id, JFreeChart chart) throws IOException {
-        int width = 640;
-        int height = 480;
+        int width = 1366;
+        int height = 768;
         File file = new File(id + ".jpeg");
         ChartUtilities.saveChartAsJPEG(file, chart, width, height);
     }
