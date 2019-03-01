@@ -1,13 +1,9 @@
 package com.codecool.greencommitment.cmdProg;
 
 import com.codecool.greencommitment.api.client.Client;
-import com.codecool.greencommitment.api.common.ChartGenerator;
-import com.codecool.greencommitment.api.common.ChartType;
 import com.codecool.greencommitment.api.common.CustomException;
-import com.codecool.greencommitment.api.common.XMLHandler;
 
 import java.io.IOException;
-import java.util.List;
 
 class ClientMenu extends AbstractMenu {
 
@@ -42,10 +38,14 @@ class ClientMenu extends AbstractMenu {
     }
 
     private void handleGeneration() {
-        try {
-            client.runClientGeneration(getSensorId(), getDelay(), getMaxGenerations());
-        } catch (CustomException e) {
-            System.out.println("Cannot start generation with given data!");
+        if (client != null) {
+            try {
+                client.runClientGeneration(getSensorId(), getDelay(), getMaxGenerations());
+            } catch (CustomException e) {
+                System.out.println("Cannot start generation with given data!");
+            }
+        } else {
+            System.out.println("Try connecting to a server first!");
         }
     }
 
@@ -88,11 +88,15 @@ class ClientMenu extends AbstractMenu {
     }
 
     private void handleExitRequest() {
-        try {
-            client.disconnect();
-            System.exit(0);
-        } catch (IOException e) {
-            System.out.println("Client socket closed.");
+        if (client != null) {
+            try {
+                client.disconnect();
+                System.exit(0);
+            } catch (IOException e) {
+                System.out.println("Client socket closed.");
+            }
+        } else {
+           System.exit(0);
         }
     }
 }
